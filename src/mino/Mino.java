@@ -12,6 +12,7 @@ public class Mino {
 	public Block tempB[] = new Block[4];	
 	int autoDropCounter = 0;
 	public int direction = 1;
+	boolean leftCollision, rightCollision, bottomCollision;
 	
 	public void create (Color c) {
 		b[0] = new Block(c);
@@ -27,21 +28,81 @@ public class Mino {
 	public void setXY(int x, int y) {}	
 	public void updateXY(int direction) {
 		
-		this.direction = direction;
-		b[0].x = tempB[0].x;
-		b[0].y = tempB[0].y;
-		b[1].x = tempB[1].x;
-		b[1].y = tempB[1].y;
-		b[2].x = tempB[2].x;
-		b[2].y = tempB[2].y;
-		b[3].x = tempB[3].x;
-		b[3].y = tempB[3].y;
+		checkRotationCollision();
 		
-	}	
+		if (leftCollision == false && rightCollision == false && bottomCollision == false) {		
+			this.direction = direction;
+			b[0].x = tempB[0].x;
+			b[0].y = tempB[0].y;
+			b[1].x = tempB[1].x;
+			b[1].y = tempB[1].y;
+			b[2].x = tempB[2].x;
+			b[2].y = tempB[2].y;
+			b[3].x = tempB[3].x;
+			b[3].y = tempB[3].y;			
+		}
+		
+	}
+	
 	public void getDirection1() {}	
 	public void getDirection2() {}	
 	public void getDirection3() {}	
 	public void getDirection4() {}
+	public void checkMovementCollision() {
+		
+		leftCollision = false;
+		rightCollision = false;
+		bottomCollision = false;
+		
+		// Left Wall
+		for (int i = 0; i < b.length; i++) {
+			if (b[i].x == PlayManager.left_x) {
+				leftCollision = true;
+			}
+		}
+		
+		// Right Wall
+		for (int i = 0; i < b.length; i++) {
+			if (b[i].x + Block.SIZE == PlayManager.right_x) {
+				rightCollision = true;
+			}
+		}
+		
+		// Bottom
+		for (int i = 0; i < b.length; i++) {
+			if (b[i].y + Block.SIZE == PlayManager.bottom_y) {
+				bottomCollision = true;
+			}
+		}
+				
+	}
+	public void checkRotationCollision() {
+		
+		leftCollision = false;
+		rightCollision = false;
+		bottomCollision = false;
+		
+		// Left Wall
+		for (int i = 0; i < b.length; i++) {
+			if (tempB[i].x < PlayManager.left_x) {
+				leftCollision = true;
+			}
+		}
+		
+		// Right Wall
+		for (int i = 0; i < b.length; i++) {
+			if (tempB[i].x + Block.SIZE > PlayManager.right_x) {
+				rightCollision = true;
+			}
+		}
+		
+		// Bottom
+		for (int i = 0; i < b.length; i++) {
+			if (tempB[i].y + Block.SIZE > PlayManager.bottom_y) {
+				bottomCollision = true;
+			}
+		}
+	}
 	
 	public void update() {
 		
@@ -55,14 +116,18 @@ public class Mino {
 			KeyHandler.upPressed = false;
 		}
 		
+		checkMovementCollision();
+		
 		if (KeyHandler.downPressed) {
 			
-			b[0].y += Block.SIZE;
-			b[1].y += Block.SIZE;
-			b[2].y += Block.SIZE;
-			b[3].y += Block.SIZE;
-			
-			autoDropCounter = 0;
+			if (bottomCollision == false) {
+				b[0].y += Block.SIZE;
+				b[1].y += Block.SIZE;
+				b[2].y += Block.SIZE;
+				b[3].y += Block.SIZE;
+				
+				autoDropCounter = 0;				
+			}
 			
 			KeyHandler.downPressed = false;
 			
@@ -70,10 +135,12 @@ public class Mino {
 		
 		if (KeyHandler.leftPressed) {
 			
-			b[0].x -= Block.SIZE;
-			b[1].x -= Block.SIZE;
-			b[2].x -= Block.SIZE;
-			b[3].x -= Block.SIZE;
+			if (leftCollision == false) {
+				b[0].x -= Block.SIZE;
+				b[1].x -= Block.SIZE;
+				b[2].x -= Block.SIZE;
+				b[3].x -= Block.SIZE;				
+			}
 			
 			KeyHandler.leftPressed = false;
 			
@@ -81,10 +148,12 @@ public class Mino {
 		
 		if (KeyHandler.rightPressed) {
 			
-			b[0].x += Block.SIZE;
-			b[1].x += Block.SIZE;
-			b[2].x += Block.SIZE;
-			b[3].x += Block.SIZE;
+			if (rightCollision == false) {
+				b[0].x += Block.SIZE;
+				b[1].x += Block.SIZE;
+				b[2].x += Block.SIZE;
+				b[3].x += Block.SIZE;				
+			}
 			
 			KeyHandler.rightPressed = false;
 			
