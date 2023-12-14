@@ -6,7 +6,9 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
-import mino.*;
+import mino.Block;
+import mino.Mino;
+import mino.Mino_L1;
 
 public class PlayManager {
 
@@ -22,6 +24,9 @@ public class PlayManager {
 	Mino currentMino;
 	final int MINO_START_X;
 	final int MINO_START_Y;	
+	
+	// Others
+	public static int dropInterval = 60;
 	
 	public PlayManager() {
 		
