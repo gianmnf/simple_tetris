@@ -38,6 +38,11 @@ public class PlayManager {
 	int effectCounter;
 	ArrayList<Integer> effectY = new ArrayList<>();
 	
+	// Score
+	int level = 1;
+	int lines;
+	int score;
+	
 	public PlayManager() {
 		
 		// Main Play Area Frame
@@ -105,6 +110,7 @@ public class PlayManager {
 		int x = left_x;
 		int y = top_y;
 		int blockCount = 0;
+		int lineCount = 0;
 		
 		while (x < right_x && y < bottom_y) {
 			
@@ -128,6 +134,9 @@ public class PlayManager {
 							staticBlocks.remove(i);
 						}
 					}
+					
+					lineCount++;
+					lines++;
 					// Sliding blocks above the deleted line
 					
 					for (int i = 0; i < staticBlocks.size(); i++) {
@@ -161,6 +170,13 @@ public class PlayManager {
 		g2.setFont(new Font("Arial", Font.PLAIN, 30));
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2.drawString("NEXT", x+60, y+60);
+		
+		g2.drawRect(x, top_y, 250, 300);
+		x += 40;
+		y = top_y + 90;
+		g2.drawString("LEVEL: " + level, x, y); y += 70;
+		g2.drawString("LINES: " + lines, x, y); y += 70;
+		g2.drawString("SCORE: " + score, x, y);
 		
 		if (currentMino != null) {		
 			currentMino.draw(g2);
