@@ -13,7 +13,7 @@ public class Mino {
 	int autoDropCounter = 0;
 	public int direction = 1;
 	boolean leftCollision, rightCollision, bottomCollision;
-	public boolean active;
+	public boolean active = true;
 	
 	public void create (Color c) {
 		b[0] = new Block(c);
