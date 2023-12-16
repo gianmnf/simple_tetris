@@ -90,6 +90,8 @@ public class PlayManager {
 			// Current Mino cannot move
 			if (currentMino.b[0].x == MINO_START_X && currentMino.b[0].y == MINO_START_Y) {
 				gameOver = true;
+				GamePanel.music.stop();
+				GamePanel.se.play(2, false);
 			}
 			
 			currentMino.deactivating = false;
@@ -137,6 +139,16 @@ public class PlayManager {
 					
 					lineCount++;
 					lines++;
+					
+					if (lines % 10 == 0 && dropInterval > 1) {
+						level++;
+						if (dropInterval > 10) {
+							dropInterval -= 10;
+						} else {
+							dropInterval -= 1;
+						}
+					}
+					
 					// Sliding blocks above the deleted line
 					
 					for (int i = 0; i < staticBlocks.size(); i++) {
@@ -153,6 +165,12 @@ public class PlayManager {
 			}
 			
 			
+		}
+		
+		if (lineCount > 0) {
+			GamePanel.se.play(1, false);
+			int singleLineScore = 10 * level;
+			score += singleLineScore * lineCount;
 		}
 	}
 	
